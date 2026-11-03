@@ -42,6 +42,14 @@ Other commands: `pnpm local:reset` wipes and re-seeds the database · `pnpm loca
 
 For a faster, production-like run: `pnpm build && pnpm start`.
 
+### Deploy to Vercel
+
+1. Import this repository into Vercel (Next.js is detected automatically) and set `NEXT_PUBLIC_DEMO_MODE=true`.
+2. In the Vercel project, open **Storage → Create Database → Supabase** and connect it to the project. This adds the Supabase URL, keys and database URLs as environment variables.
+3. Redeploy. Each build first runs `scripts/db-deploy.mjs`, which applies new migrations and, on the first deploy, loads the demo data.
+
+Scheduled jobs in `vercel.json` run daily (Vercel's free plan allows no more); open order-tracking, partner and admin screens drive the simulation in between.
+
 ### Linux without Docker
 
 `scripts/dev-stack/start.sh` runs a lightweight Supabase stand-in (needs Postgres 16 and Linux x64; it downloads the Auth and PostgREST binaries). `scripts/dev-stack/start.sh --reset` re-creates and seeds the database, then `pnpm dev`. The automated tests run against this stack.

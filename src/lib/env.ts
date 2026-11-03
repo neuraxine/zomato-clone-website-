@@ -25,7 +25,9 @@ const emptyToUndefined = (v: string | undefined) => (v === "" ? undefined : v);
 
 export const publicEnv = publicSchema.parse({
   NEXT_PUBLIC_SUPABASE_URL: emptyToUndefined(process.env.NEXT_PUBLIC_SUPABASE_URL),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: emptyToUndefined(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
+  // Supabase's newer "publishable" key works the same as the anon key (the Vercel integration may set either).
+  NEXT_PUBLIC_SUPABASE_ANON_KEY:
+    emptyToUndefined(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) ?? emptyToUndefined(process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY),
   NEXT_PUBLIC_RAZORPAY_KEY_ID: emptyToUndefined(process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID),
   NEXT_PUBLIC_DEMO_MODE: emptyToUndefined(process.env.NEXT_PUBLIC_DEMO_MODE),
 });
@@ -33,7 +35,7 @@ export const publicEnv = publicSchema.parse({
 /** Only call from server code. Values are never sent to the browser. */
 export function getServerEnv() {
   return serverSchema.parse({
-    SUPABASE_SERVICE_ROLE_KEY: emptyToUndefined(process.env.SUPABASE_SERVICE_ROLE_KEY),
+    SUPABASE_SERVICE_ROLE_KEY: emptyToUndefined(process.env.SUPABASE_SERVICE_ROLE_KEY) ?? emptyToUndefined(process.env.SUPABASE_SECRET_KEY),
     RAZORPAY_KEY_SECRET: emptyToUndefined(process.env.RAZORPAY_KEY_SECRET),
     RAZORPAY_WEBHOOK_SECRET: emptyToUndefined(process.env.RAZORPAY_WEBHOOK_SECRET),
     OPENAI_API_KEY: emptyToUndefined(process.env.OPENAI_API_KEY),

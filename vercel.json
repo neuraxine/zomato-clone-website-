@@ -1,7 +1,8 @@
 {
+  "buildCommand": "node scripts/db-deploy.mjs && pnpm build",
   "crons": [
-    { "path": "/api/cron/scheduled-orders", "schedule": "*/5 * * * *" },
-    { "path": "/api/cron/dispatch", "schedule": "* * * * *" },
+    { "path": "/api/cron/dispatch", "schedule": "0 3 * * *" },
+    { "path": "/api/cron/scheduled-orders", "schedule": "30 2 * * *" },
     { "path": "/api/cron/payouts", "schedule": "30 19 * * 0" }
   ]
 }

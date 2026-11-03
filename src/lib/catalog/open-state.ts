@@ -41,6 +41,12 @@ export function formatClock(hhmm: string) {
   return `${h12}${m ? `:${String(m).padStart(2, "0")}` : ""} ${suffix}`;
 }
 
+/**
+ * In demo mode restaurants ignore their opening hours (offline, busy and holidays still close them), so the demo
+ * works at any hour. Set NEXT_PUBLIC_DEMO_RESPECT_HOURS=true to show real hours in demo mode.
+ */
+const IGNORE_HOURS = process.env.NEXT_PUBLIC_DEMO_MODE === "true" && process.env.NEXT_PUBLIC_DEMO_RESPECT_HOURS !== "true";
+
 export function getOpenState(
   r: { is_online: boolean; busy_until: string | null; holidays: string[]; opening_hours: unknown },
   now = new Date(),
@@ -52,6 +58,7 @@ export function getOpenState(
     const mins = Math.ceil((new Date(r.busy_until).getTime() - now.getTime()) / 60000);
     return { open: false, label: `Busy, back in ${mins} min`, opensSoon: mins <= 60 };
   }
+  if (IGNORE_HOURS) return { open: true };
   const hours = (r.opening_hours ?? {}) as OpeningHours;
   const today = hours[DAYS[dayIdx]!] ?? [];
   const yesterday = hours[DAYS[(dayIdx + 6) % 7]!] ?? [];
