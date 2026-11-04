@@ -1,8 +1,19 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
   "buildCommand": "node scripts/db-deploy.mjs && pnpm build",
   "crons": [
-    { "path": "/api/cron/dispatch", "schedule": "0 3 * * *" },
-    { "path": "/api/cron/scheduled-orders", "schedule": "30 2 * * *" },
-    { "path": "/api/cron/payouts", "schedule": "30 19 * * 0" }
+    {
+      "path": "/api/cron/dispatch",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/scheduled-orders",
+      "schedule": "30 2 * * *"
+    },
+    {
+      "path": "/api/cron/payouts",
+      "schedule": "30 19 * * 0"
+    }
   ]
 }
