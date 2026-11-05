@@ -97,6 +97,14 @@ test("demo mode: every app opens without a login screen", async ({ page }) => {
   await expect(page.getByRole("link", { name: "Your account" }).or(page.getByRole("link", { name: /account/i })).first()).toBeVisible();
 });
 
+test("demo mode: a customer page opened without a session signs in the demo customer", async ({ page }) => {
+  await page.goto("/cart");
+  await expect(page).toHaveURL(/\/cart$/);
+  await expect(page.getByRole("link", { name: "Sign in to continue" })).toHaveCount(0);
+  await page.goto("/account");
+  await expect(page.getByRole("heading", { name: "Priya Sharma" }).or(page.getByText("customer@demo.in")).first()).toBeVisible();
+});
+
 test("password sign-in from the login page", async ({ page, context }) => {
   await setLocation(context);
   await page.goto("/login?next=%2Faccount");

@@ -9,8 +9,6 @@ import { Logo } from "@/components/shared/logo";
 import { getSessionUser } from "@/lib/auth/session";
 import { getPreferences } from "@/lib/preferences";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import { signInHref } from "@/config/demo";
-import { isDemoMode } from "@/lib/env";
 
 export default async function CustomerLayout({ children }: { children: React.ReactNode }) {
   const [prefs, user] = await Promise.all([getPreferences(), getSessionUser()]);
@@ -55,7 +53,7 @@ export default async function CustomerLayout({ children }: { children: React.Rea
                 {initials || <UserRound className="size-5" aria-hidden />}
               </Link>
             ) : (
-              <Link href={isDemoMode ? signInHref("/", true) : "/login"} className="rounded-xl bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
+              <Link href="/login" className="rounded-xl bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
                 Sign in
               </Link>
             )}

@@ -14,6 +14,20 @@ export async function middleware(request: NextRequest) {
     } else url.pathname = "/welcome";
     return NextResponse.redirect(url);
   }
+  // Demo mode: customer pages never ask to sign in. A visitor without a session is signed in as the demo
+  // customer (see /demo/enter). The login page, the other apps (their layouts pick their own demo account)
+  // and API/auth routes are left alone.
+  if (
+    process.env.NEXT_PUBLIC_DEMO_MODE === "true" &&
+    request.method === "GET" &&
+    !/^\/(login|demo|api|auth|welcome|partner|rider|admin|forbidden|blocked|offline)(\/|$)/.test(request.nextUrl.pathname) &&
+    !request.cookies.getAll().some((c) => c.name.startsWith("sb-") && c.name.includes("-auth-token"))
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/demo/enter";
+    url.search = `?as=customer&next=${encodeURIComponent(request.nextUrl.pathname + request.nextUrl.search)}`;
+    return NextResponse.redirect(url);
+  }
   // Role guards live in each app's layout (see requireRole); here we only refresh the session.
   return updateSession(request);
 }

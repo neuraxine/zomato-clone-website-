@@ -25,7 +25,6 @@ import { getCheckoutContext, getQuote, placeOrder } from "@/lib/checkout/actions
 import { cn, formatPaise } from "@/lib/utils";
 import { useCart, useCartHydrated, type CartLine } from "./cart-store";
 import { useCheckout, type PayMethod } from "./checkout-store";
-import { signInHref } from "@/config/demo";
 
 const PAY_METHODS: { id: PayMethod; label: string; icon: typeof Smartphone; sub: string }[] = [
   { id: "upi", label: "UPI", icon: Smartphone, sub: "GPay, PhonePe, Paytm, BHIM" },
@@ -246,7 +245,7 @@ export function CartView() {
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Sign in to choose a delivery address and place your order.</p>
               <Button asChild className="w-full">
-                <Link href={signInHref("/cart", process.env.NEXT_PUBLIC_DEMO_MODE === "true")}>Sign in to continue</Link>
+                <Link href="/login?next=/cart">Sign in to continue</Link>
               </Button>
             </div>
           ) : (
